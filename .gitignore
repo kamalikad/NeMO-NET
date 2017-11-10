@@ -4,10 +4,16 @@
 *.tiff
 *.png
 *.out
-# TensorFlow/keras  save files #
+*.jpg
+# TensorFlow  save files #
 ###############
 *.meta
 *.index
 *.data*
 *.h5
 *.json
+# Keras saved files #
+###################
+*.h5
+*.json
+*.npy
