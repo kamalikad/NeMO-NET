@@ -50,6 +50,25 @@ class CoralData:
 				item_counter+=1
 			self.num_classes = len(np.unique(self.truthimage))
 
+#### Load a set of images, append and convert to arrays
+# reads an image data set from a folder
+# and appends it to get num_images X 1 X dim1 X dim2
+# 
+# Input:
+# 	ImagepathFolder: image folder path , e.g. train images/truth train images
+#		For our purpose: this assumes truth image is similar in dim to train image
+	def load_imgset(self, ImagepathFolder) :
+		data =[]
+		for fname in os.listdir(im_path):
+			pathname = os.path.join(im_path, fname)
+			#img = Image.open(pathname)# this is with PIL library
+			img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
+			#print("img.shape",img.shape)
+			img1 = img#[np.newaxis,:,:]
+			#print("img1.shape",img1.shape)
+			data.append(img1)
+		return np.array(data)
+			
 #### Set the pixel depth (usually 8-bit = 255)
 # Input:
 # 	depth: Pixel depth
