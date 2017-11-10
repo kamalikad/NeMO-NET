@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import os
 import random
 from matplotlib import pyplot as plt
 
@@ -61,7 +62,6 @@ class CoralData:
 		data =[]
 		for fname in os.listdir(im_path):
 			pathname = os.path.join(im_path, fname)
-			#img = Image.open(pathname)# this is with PIL library
 			img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
 			#print("img.shape",img.shape)
 			img1 = img#[np.newaxis,:,:]

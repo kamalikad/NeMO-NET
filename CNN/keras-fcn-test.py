@@ -132,6 +132,14 @@ print("y shape: ", y.shape)
 # In[ ]:
 
 
+# load train data
+X_train = load_imgset(output_trainpath)
+print("X_train shape ", X_train.shape)
+
+
+# In[ ]:
+
+
 fcn_vgg16.compile(optimizer='rmsprop',
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
