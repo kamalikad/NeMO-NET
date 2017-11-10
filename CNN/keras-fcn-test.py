@@ -3,7 +3,7 @@
 
 # # test keras-fcn
 
-# In[1]:
+# In[10]:
 
 
 # import moduls
@@ -35,7 +35,7 @@ from keras_fcn import FCN
 
 
 
-# In[2]:
+# In[11]:
 
 
 # prepare training set from coral set
@@ -107,7 +107,7 @@ fcn_vgg16.summary()
 
 # # Test input size and type
 
-# In[16]:
+# In[4]:
 
 
 #input_shape = (100, 100, 3)
@@ -129,11 +129,11 @@ print("y shape: ", y.shape)
 
 # ## upload train and reference images
 
-# In[ ]:
+# In[6]:
 
 
 # load train data
-X_train = load_imgset(output_trainpath)
+X_train = coralutils.CoralData.(output_trainpath)
 print("X_train shape ", X_train.shape)
 
 

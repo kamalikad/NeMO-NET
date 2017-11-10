@@ -58,16 +58,14 @@ class CoralData:
 # Input:
 # 	ImagepathFolder: image folder path , e.g. train images/truth train images
 #		For our purpose: this assumes truth image is similar in dim to train image
-	def load_imgset(self, ImagepathFolder) :
-		data =[]
-		for fname in os.listdir(im_path):
-			pathname = os.path.join(im_path, fname)
-			img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
-			#print("img.shape",img.shape)
-			img1 = img#[np.newaxis,:,:]
-			#print("img1.shape",img1.shape)
-			data.append(img1)
-		return np.array(data)
+# Output: an array of N_images x nrow x ncol x n_channels
+	def load_imgset(self, ImagepathFolder):
+		self.data =[]
+		for fname in os.listdir(ImagepathFolder):
+			pathname = os.path.join(ImagepathFolder, fname)
+			self.img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
+			self.data.append(self.img)
+		return np.array(self.data)
 			
 #### Set the pixel depth (usually 8-bit = 255)
 # Input:
