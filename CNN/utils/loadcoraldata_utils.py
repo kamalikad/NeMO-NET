@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 # Class of coral data, consisting of an image and possibly a corresponding truth map
 class CoralData:
 	image = None
+	ImagepathFolder = None
 	num_classes = 0
 	truthimage = None
 	train_datasets = None

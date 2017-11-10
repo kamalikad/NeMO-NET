@@ -3,7 +3,7 @@
 
 # # test keras-fcn
 
-# In[10]:
+# In[12]:
 
 
 # import moduls
@@ -35,7 +35,7 @@ from keras_fcn import FCN
 
 
 
-# In[11]:
+# In[13]:
 
 
 # prepare training set from coral set
@@ -59,7 +59,7 @@ print(Transect1.valid_datasets.shape, Transect1.valid_labels.shape)
 print(Transect1.test_datasets.shape, Transect1.test_labels.shape)
 
 
-# In[5]:
+# In[17]:
 
 
 # generate pixel-wise segmented dataset for training/valid/test
@@ -107,7 +107,7 @@ fcn_vgg16.summary()
 
 # # Test input size and type
 
-# In[4]:
+# In[14]:
 
 
 #input_shape = (100, 100, 3)
@@ -129,11 +129,24 @@ print("y shape: ", y.shape)
 
 # ## upload train and reference images
 
-# In[6]:
+# In[15]:
+
+
+# define image set function:
+def load_imgset(ImagepathFolder):
+    data =[]
+    for fname in os.listdir(ImagepathFolder):
+        pathname = os.path.join(ImagepathFolder, fname)
+        img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
+        data.append(img)
+    return np.array(data)
+
+
+# In[16]:
 
 
 # load train data
-X_train = coralutils.CoralData.(output_trainpath)
+X_train = load_imgset(output_trainpath)
 print("X_train shape ", X_train.shape)
 
 
