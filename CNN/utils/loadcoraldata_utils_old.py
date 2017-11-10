@@ -143,15 +143,8 @@ class CoralData:
 		self.test_labels = np.zeros(shape=(N_test*self.num_classes, 1))
 		self.test_datasets, self.test_labels = self._generate_randomized_set(image_size, N_test, idxremove , self.test_datasets, self.test_labels, figureson)
 
-# Input:
-#	exporttrainpath: Directory for exported patch images 
-# 	exportlabelpath: Directory for exported segmented images
-# 	txtfilename: Name of text file to record image names (remember to include '.txt')
-# 	image_size: Size of image
-# 	N: Number of images per class (NOTE: because these are segmented maps, the class is only affiliated with the center pixel)
-# 	lastchannelremove: Remove last channel or not
-# 	labelkey: Naming convention of class labels (NOTE: must be same # as the # of classes)
-	def export_segmentation_map(self, exporttrainpath, exportlabelpath, txtfilename, image_size=25, N=20000, lastchannelremove = True, labelkey = None):
+
+	def export_segmentation_map(self, exporttrainpath, exportlabelpath, image_size=25, N=20000, lastchannelremove = True, labelkey = None):
 		crop_len = int(np.floor(image_size/2))
 		try:
 			# Crop the image so that border areas are not considered
@@ -159,8 +152,6 @@ class CoralData:
 		except TypeError:
 			print("Truth/Reference image improperly defined")
 			return
-
-		f = open(exporttrainpath+txtfilename,'w')
 
 		for k in range(self.num_classes):
 			[i,j] = np.where(truthcrop == k)
@@ -173,14 +164,11 @@ class CoralData:
 					tempimage = np.delete(tempimage, -1,-1) # Remove last dimension of array
 
 				if labelkey is not None:
-					trainstr = labelkey[k] + '_' + str(nn).zfill(8) + '.png'
-					truthstr = labelkey[k] + '_' + str(nn).zfill(8) + '.png'
+					trainstr = labelkey[k] + '_' + str(nn).zfill(8) + '.tiff'
+					truthstr = labelkey[k] + '_' + str(nn).zfill(8) + '.tiff'
 				else:
-					trainstr = 'class' + str(k) + '_' + str(nn).zfill(8) + '.png'
-					truthstr = 'class' + str(k) + '_' + str(nn).zfill(8) + '.png'
-					f.write('class'+str(k)+'_'+str(nn).zfill(8)+'\n')
+					trainstr = 'class' + str(k) + '_' + str(nn).zfill(8) + '.tiff'
+					truthstr = 'class' + str(k) + '_' + str(nn).zfill(8) + '.tiff'
 
 				cv2.imwrite(exporttrainpath+trainstr, tempimage)
 				cv2.imwrite(exportlabelpath+truthstr, templabel)
-				print(str(k*N+nn+1) + '/ ' + str(self.num_classes*N) +' patches exported', end='\r')
-		f.close()
