@@ -3,7 +3,7 @@
 
 # # test keras-fcn
 
-# In[12]:
+# In[40]:
 
 
 # import moduls
@@ -35,7 +35,7 @@ from keras_fcn import FCN
 
 
 
-# In[13]:
+# In[41]:
 
 
 # prepare training set from coral set
@@ -44,7 +44,7 @@ transect1_truth_path = '../Images/Transect 1 Truth data.tif'
 
 image_size = 100
 
-Transect1 = coralutils.CoralData(transect1_path, Truthpath=transect1_truth_path, truth_key=[16,160,198,38])
+Transect1 = coralutils.CoralData(transect1_path, Truthpath=transect1_truth_path, truth_key=[0,63, 127,191])
 Transect1.generate_trainingset(image_size=image_size, N_train=200, idxremove = 3, figureson = True)
 Transect1.generate_validset(image_size=image_size, N_valid=20, idxremove = 3, figureson = False)
 Transect1.generate_testset(image_size=image_size, N_test=20, idxremove = 3, figureson = False)
@@ -79,8 +79,8 @@ test_filename_out    = 'NeMO_test.txt'
 
 
 image_size = 100
-labels = ('Sand', 'Branching', 'Mounding', 'Rock')
-Transect1 = coralutils.CoralData(transect1_path, Truthpath=transect1_truth_path, truth_key=[16,160,198,38])
+labels = ('Sand', 'Branching', 'Mounding', 'Rock')# (0,63, 127,191) # old is (16,160,198,38)
+Transect1 = coralutils.CoralData(transect1_path, Truthpath=transect1_truth_path, truth_key=[0,63, 127,191])
 # training set
 Transect1.export_segmentation_map(output_trainpath, output_train_refpath, train_filename_out,
                         image_size=image_size, N=200, lastchannelremove = True, labelkey = labels)
@@ -129,20 +129,25 @@ print("y shape: ", y.shape)
 
 # ## upload train and reference images
 
-# In[15]:
+# In[32]:
 
 
 # define image set function:
 def load_imgset(ImagepathFolder):
+    import os
     data =[]
     for fname in os.listdir(ImagepathFolder):
         pathname = os.path.join(ImagepathFolder, fname)
-        img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
-        data.append(img)
+        #img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
+        if pathname.endswith(".png"):
+            print(pathname)
+            img = cv2.imread(pathname, cv2.IMREAD_COLOR)
+            #img = cv2.imread(pathname, cv2.IMREAD_UNCHANGED)
+            data.append(img)
     return np.array(data)
 
 
-# In[16]:
+# In[28]:
 
 
 # load train data
@@ -150,7 +155,49 @@ X_train = load_imgset(output_trainpath)
 print("X_train shape ", X_train.shape)
 
 
-# In[ ]:
+# In[39]:
+
+
+# look at ref images:
+loadtruthpath = '../Images/Ref_Patches_train/Branching_00000003.png'
+
+a = cv2.imread(loadtruthpath,0)
+print(np.unique(a))
+print(a[0:10,0:10])
+
+# test converting labeled data into categorical:
+a_cat = keras.utils.to_categorical(a, Transect1.num_classes)
+
+
+# In[36]:
+
+
+# define image set function:
+def load_imgset(ImagepathFolder):
+    import os
+    data =[]
+    for fname in os.listdir(ImagepathFolder):
+        pathname = os.path.join(ImagepathFolder, fname)
+        
+        if pathname.endswith(".png"):
+            print(pathname)
+            #img = cv2.imread(pathname, cv2.IMREAD_COLOR)
+            #img = cv2.imread(pathname, cv2.IMREAD_UNCHANGED)
+            img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
+            data.append(img)
+    return np.array(data)
+
+
+# In[37]:
+
+
+# load train reference data
+y_train = load_imgset(output_train_refpath)
+# array with imread_color is 800,100,100
+print("y_train shape ", y_train.shape)
+
+
+# In[38]:
 
 
 fcn_vgg16.compile(optimizer='rmsprop',

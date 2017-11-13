@@ -62,10 +62,12 @@ class CoralData:
 # Output: an array of N_images x nrow x ncol x n_channels
 	def load_imgset(self, ImagepathFolder):
 		self.data =[]
-		for fname in os.listdir(ImagepathFolder):
-			pathname = os.path.join(ImagepathFolder, fname)
-			self.img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
-			self.data.append(self.img)
+		for fname in os.listdir(self.ImagepathFolder):
+			pathname = os.path.join(self.ImagepathFolder, fname)
+			if pathname.endswith(".png"):
+				print(pathname)
+				img = cv2.imread(pathname, cv2.IMREAD_ANYCOLOR)
+				self.data.append(img)
 		return np.array(self.data)
 			
 #### Set the pixel depth (usually 8-bit = 255)
