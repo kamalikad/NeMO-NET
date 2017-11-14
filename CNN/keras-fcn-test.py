@@ -3,7 +3,7 @@
 
 # # test keras-fcn
 
-# In[6]:
+# In[1]:
 
 
 # import moduls
@@ -35,7 +35,7 @@ from keras_fcn import FCN
 
 
 
-# In[4]:
+# In[2]:
 
 
 # prepare training set from coral set
@@ -60,7 +60,7 @@ print(Transect1.valid_datasets.shape, Transect1.valid_labels.shape)
 print(Transect1.test_datasets.shape, Transect1.test_labels.shape)
 
 
-# In[7]:
+# In[3]:
 
 
 # generate pixel-wise segmented dataset for training/valid/test
