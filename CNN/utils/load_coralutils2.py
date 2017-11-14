@@ -171,8 +171,8 @@ class CoralData:
 # 	N: Number of images per class (NOTE: because these are segmented maps, the class is only affiliated with the center pixel)
 # 	lastchannelremove: Remove last channel or not
 # 	labelkey: Naming convention of class labels (NOTE: must be same # as the # of classes)
-#   View is true when we want to view grey levels; False if we want to use image segmented labels for training
-	def export_segmentation_map(self, exporttrainpath, exportlabelpath, txtfilename, image_size=25, N=20000, lastchannelremove = True, labelkey = None, View = True):
+#   ViewLabel is true when we want to view grey levels; False if we want to use image segmented labels for training
+	def export_segmentation_map(self, exporttrainpath, exportlabelpath, txtfilename, image_size=25, N=20000, lastchannelremove = True, labelkey = None, ViewLabel = False):
 		crop_len = int(np.floor(image_size/2))
 		try:
 			# Crop the image so that border areas are not considered
@@ -188,7 +188,7 @@ class CoralData:
 			idx = np.asarray(random.sample(range(len(i)), N)).astype(int)
 			for nn in range(len(idx)):
 				tempimage = self.image[i[idx[nn]]:i[idx[nn]]+image_size, j[idx[nn]]:j[idx[nn]]+image_size, :]
-				if View is True:
+				if ViewLabel is True:
 					templabel = np.asarray(self.truthimage[i[idx[nn]]:i[idx[nn]]+image_size, j[idx[nn]]:j[idx[nn]]+image_size]*(self.depth/self.num_classes)).astype(np.uint8)
 				else:
 					templabel = np.asarray(self.truthimage[i[idx[nn]]:i[idx[nn]]+image_size, j[idx[nn]]:j[idx[nn]]+image_size]).astype(np.uint8)

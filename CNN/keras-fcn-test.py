@@ -3,7 +3,7 @@
 
 # # test keras-fcn
 
-# In[1]:
+# In[15]:
 
 
 # import moduls
@@ -19,7 +19,8 @@ import pandas as pd
 import logging
 
 sys.path.append('./utils/')
-import loadcoraldata_utils as coralutils
+#import loadcoraldata_utils as coralutils
+import load_coralutils2 as coralutils
 
 
 import keras
@@ -35,7 +36,7 @@ from keras_fcn import FCN
 
 
 
-# In[2]:
+# In[7]:
 
 
 # prepare training set from coral set
@@ -60,7 +61,7 @@ print(Transect1.valid_datasets.shape, Transect1.valid_labels.shape)
 print(Transect1.test_datasets.shape, Transect1.test_labels.shape)
 
 
-# In[3]:
+# In[9]:
 
 
 # generate pixel-wise segmented dataset for training/valid/test
@@ -84,19 +85,16 @@ labels = ('Sand', 'Branching', 'Mounding', 'Rock')# (0,63, 127,191) # old is (16
 Transect1 = coralutils.CoralData(transect1_path, Truthpath=transect1_truth_path, truth_key=[16,160,198,38])
 # training set
 Transect1.export_segmentation_map(output_trainpath, output_train_refpath, train_filename_out,
-                        image_size=image_size, N=200, lastchannelremove = True, labelkey = labels, View = False)
+                        image_size=image_size, N=200, lastchannelremove = True, labelkey = labels, ViewLabel = False)
 # validation set
 Transect1.export_segmentation_map(output_validpath, output_valid_refpath, valid_filename_out,
-                        image_size=image_size, N=20, lastchannelremove = True, labelkey = labels, View = False)
+                        image_size=image_size, N=20, lastchannelremove = True, labelkey = labels, ViewLabel = False)
 # test set
 Transect1.export_segmentation_map(output_testpath, output_test_refpath, test_filename_out,
-                        image_size=image_size, N=20, lastchannelremove = True, labelkey = labels, View = False)
+                        image_size=image_size, N=20, lastchannelremove = True, labelkey = labels, ViewLabel = False)
 
 
-
-
-
-# In[3]:
+# In[8]:
 
 
 # run VGG-16 example test
@@ -130,7 +128,7 @@ print("y shape: ", y.shape)
 
 # ## upload train and reference images
 
-# In[32]:
+# In[30]:
 
 
 # define image set function:
@@ -148,7 +146,7 @@ def load_imgset(ImagepathFolder):
     return np.array(data)
 
 
-# In[28]:
+# In[19]:
 
 
 # load train data
@@ -156,11 +154,11 @@ X_train = load_imgset(output_trainpath)
 print("X_train shape ", X_train.shape)
 
 
-# In[39]:
+# In[31]:
 
 
 # look at ref images:
-loadtruthpath = '../Images/Ref_Patches_train/Branching_00000003.png'
+loadtruthpath = '../Images/Ref_Patches_train/Rock_00000003.png'
 
 a = cv2.imread(loadtruthpath,0)
 print(np.unique(a))
@@ -170,7 +168,7 @@ print(a[0:10,0:10])
 a_cat = keras.utils.to_categorical(a, Transect1.num_classes)
 
 
-# In[36]:
+# In[28]:
 
 
 # define image set function:
@@ -189,7 +187,7 @@ def load_imgset(ImagepathFolder):
     return np.array(data)
 
 
-# In[37]:
+# In[32]:
 
 
 # load train reference data
@@ -198,7 +196,7 @@ y_train = load_imgset(output_train_refpath)
 print("y_train shape ", y_train.shape)
 
 
-# In[38]:
+# In[22]:
 
 
 fcn_vgg16.compile(optimizer='rmsprop',
