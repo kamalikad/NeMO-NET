@@ -3,7 +3,7 @@
 
 # # test keras-fcn
 
-# In[40]:
+# In[6]:
 
 
 # import moduls
@@ -35,16 +35,17 @@ from keras_fcn import FCN
 
 
 
-# In[41]:
+# In[4]:
 
 
 # prepare training set from coral set
+# this is deprecated
 transect1_path = '../Images/Transect 1 Hi-Res.tiff'
 transect1_truth_path = '../Images/Transect 1 Truth data.tif'
 
 image_size = 100
 
-Transect1 = coralutils.CoralData(transect1_path, Truthpath=transect1_truth_path, truth_key=[0,63, 127,191])
+Transect1 = coralutils.CoralData(transect1_path, Truthpath=transect1_truth_path, truth_key=[16,160,198,38])
 Transect1.generate_trainingset(image_size=image_size, N_train=200, idxremove = 3, figureson = True)
 Transect1.generate_validset(image_size=image_size, N_valid=20, idxremove = 3, figureson = False)
 Transect1.generate_testset(image_size=image_size, N_test=20, idxremove = 3, figureson = False)
@@ -59,7 +60,7 @@ print(Transect1.valid_datasets.shape, Transect1.valid_labels.shape)
 print(Transect1.test_datasets.shape, Transect1.test_labels.shape)
 
 
-# In[17]:
+# In[7]:
 
 
 # generate pixel-wise segmented dataset for training/valid/test
@@ -80,16 +81,16 @@ test_filename_out    = 'NeMO_test.txt'
 
 image_size = 100
 labels = ('Sand', 'Branching', 'Mounding', 'Rock')# (0,63, 127,191) # old is (16,160,198,38)
-Transect1 = coralutils.CoralData(transect1_path, Truthpath=transect1_truth_path, truth_key=[0,63, 127,191])
+Transect1 = coralutils.CoralData(transect1_path, Truthpath=transect1_truth_path, truth_key=[16,160,198,38])
 # training set
 Transect1.export_segmentation_map(output_trainpath, output_train_refpath, train_filename_out,
-                        image_size=image_size, N=200, lastchannelremove = True, labelkey = labels)
+                        image_size=image_size, N=200, lastchannelremove = True, labelkey = labels, View = False)
 # validation set
 Transect1.export_segmentation_map(output_validpath, output_valid_refpath, valid_filename_out,
-                        image_size=image_size, N=20, lastchannelremove = True, labelkey = labels)
+                        image_size=image_size, N=20, lastchannelremove = True, labelkey = labels, View = False)
 # test set
 Transect1.export_segmentation_map(output_testpath, output_test_refpath, test_filename_out,
-                        image_size=image_size, N=20, lastchannelremove = True, labelkey = labels)
+                        image_size=image_size, N=20, lastchannelremove = True, labelkey = labels, View = False)
 
 
 
